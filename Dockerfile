@@ -1,12 +1,9 @@
-# Pull base image.
-FROM ubuntu:14.04
-
-# Install following packages
-
-RUN apt-get update && apt-get -y install curl php5-cli php5-common php5-mysql php5-xdebug libapache2-mod-php5 apache2 nano \
-software-properties-common --force-yes -y
-
-RUN add-apt-repository ppa:ondrej/php && apt-get update && apt-get install php5 curl php5-curl --force-yes -y
-COPY app/ /var/www/html
+FROM alpine:3.4
+RUN apk --update --no-cache add apache2 php5-apache2 bash apache2-utils 
+RUN mkdir -p /run/apache2
+COPY app /var/www/html
+COPY dir.conf /etc/apache2/conf.d/
+COPY httpd-foreground /usr/local/bin/
 EXPOSE 80
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+#CMD ["httpd-foreground"]
+CMD ["/usr/sbin/apachectl","-DFOREGROUND"]
