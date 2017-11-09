@@ -22,6 +22,3 @@ sd
 dd
 sdf
 d
-
-d
-dd
